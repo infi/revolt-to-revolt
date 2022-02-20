@@ -4,6 +4,7 @@ import { LRU } from "./lib/lru.js"
 import { Message } from "revolt.js/dist/maps/Messages"
 import { MongoClient, ObjectId } from "mongodb"
 import { Channel } from "revolt.js/dist/maps/Channels"
+import { hasPerm } from "./lib/permission.js"
 
 type DBChannel = {
     _id: ObjectId,
@@ -42,6 +43,13 @@ const commands: Record<string, (m: Message, a: string[]) => any> = {
 
         if (!fromCh || !toCh) {
             message.reply("Usage: `:add [from channel (channel ID)] [to channel (channel ID)]` (Invalid channel ID)")
+            return
+        }
+
+        const otherServerMember = await toCh.server?.fetchMember(message.author!)!
+
+        if (hasPerm(message.member!, "ManageChannels") || hasPerm(otherServerMember, "ManageChannels")) {
+            message.reply(`You must be a moderator (ManageChannels) of both this server and ${toCh.server?.name} to use the command`)
             return
         }
 
