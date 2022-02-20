@@ -1,0 +1,26 @@
+{
+    "include": [
+        "src/**/*.ts"
+    ],
+    "compileOnSave": true,
+    "compilerOptions": {
+        "outDir": "dist",
+        "target": "ESNext",
+        "module": "ESNext",
+        "lib": [
+            "ESNext",
+        ],
+        "moduleResolution": "Node",
+        "strict": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "allowJs": true,
+        "checkJs": true,
+        "forceConsistentCasingInFileNames": true,
+        "noEmit": false,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+    }
+}
