@@ -48,7 +48,7 @@ const commands: Record<string, (m: Message, a: string[]) => any> = {
 
         const otherServerMember = await toCh.server?.fetchMember(message.author!)!
 
-        if (hasPerm(message.member!, "ManageChannels") || hasPerm(otherServerMember, "ManageChannels")) {
+        if (!hasPerm(message.member!, "ManageChannels") || !hasPerm(otherServerMember, "ManageChannels")) {
             message.reply(`You must be a moderator (ManageChannels) of both this server and ${toCh.server?.name} to use the command`)
             return
         }
