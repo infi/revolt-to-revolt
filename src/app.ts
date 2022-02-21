@@ -13,9 +13,10 @@ type DBChannel = {
     createdBy: string
 }
 
-const PREFIX = "rtr:"
-
 config()
+
+const PREFIX = "rtr:"
+const ADMINS = process.env.ADMIN_ALLOWLIST?.split(",")!
 
 const mongo = (await new MongoClient(process.env.MONGO_URL!).connect()).db("revolt-to-revolt")
 
@@ -46,9 +47,10 @@ const commands: Record<string, (m: Message, a: string[]) => any> = {
             return
         }
 
+        const fromServerMember = await fromCh.server?.fetchMember(message.author!)!
         const otherServerMember = await toCh.server?.fetchMember(message.author!)!
 
-        if (!hasPerm(message.member!, "ManageChannels") || !hasPerm(otherServerMember, "ManageChannels")) {
+        if (!ADMINS.includes(message.author_id) && (!hasPerm(fromServerMember, "ManageChannels") || !hasPerm(otherServerMember, "ManageChannels"))) {
             message.reply(`You must be a moderator (ManageChannels) of both this server and ${toCh.server?.name} to use the command`)
             return
         }
@@ -80,19 +82,16 @@ const handleBridge = async (message: Message) => {
         if (channel.from === channel.to)
             return
 
-        let channelFrom: Channel
         let channelTo: Channel
 
         try {
-            channelFrom = await client.channels.fetch(channel.from)
             channelTo = await client.channels.fetch(channel.to)
         } catch (e) {
-
             return
         }
 
         const replyText = (await Promise.all((message.reply_ids ?? []).map(async id => {
-            const msg = await client.messages.get(id)
+            const msg = client.messages.get(id)
             if (!msg) return ""
             return `> ${msg.author?.username}: ${msg.content}  \n  \n`
         }))).join("\n")
