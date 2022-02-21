@@ -100,8 +100,7 @@ const handleBridge = async (message: Message) => {
             `[Attachment #${i}](https://autumn.revolt.chat/${x.tag}/${x._id})`
         )).join("\n") : ""
 
-        const authorName = `${message.member?.nickname ??
-            message.author?.username} [from ${channelFrom.name} in ${channelFrom.server?.name}]`
+        const authorName = `${message.member?.nickname ?? message.author?.username}`
         const messageContent = !!message.author?.bot
             ? `$\\scriptsize\\color{gray}\\textsf{[bot]}$ ${message.content}`
             : message.content
