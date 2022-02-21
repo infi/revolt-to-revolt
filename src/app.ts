@@ -137,6 +137,30 @@ client.on("message", (message) => {
     }
 })
 
+client.on("message/delete", (message_id) => {
+    const have = messages.has(message_id)
+    if (!have) return
+
+    const bot_message_id = messages.read(message_id)
+    if (!bot_message_id) return
+    const message = client.messages.get(bot_message_id)
+    if (!message) return
+
+    message.delete()
+})
+
+client.on("message/update", (new_message) => {
+    const have = messages.has(new_message._id)
+    if (!have) return
+
+    const bot_message_id = messages.read(new_message._id)
+    if (!bot_message_id) return
+    const message = client.messages.get(bot_message_id)
+    if (!message) return
+
+    message.edit({ content: new_message.content.toString() })
+})
+
 client.on("ready", () => {
     console.log("ready")
 })

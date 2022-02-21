@@ -2,7 +2,8 @@
     "name": "revolt-to-revolt",
     "scripts": {
         "build": "tsc -p tsconfig.json --pretty",
-        "dev": "tsc-watch --onSuccess \"node --experimental-specifier-resolution=node dist/app.js\" -p tsconfig.json"
+        "dev": "tsc-watch --onSuccess \"node --experimental-specifier-resolution=node dist/app.js\" -p tsconfig.json",
+        "start": "node --experimental-specifier-resolution=node dist/app.js"
     },
     "private": "true",
     "main": "dist/app.js",

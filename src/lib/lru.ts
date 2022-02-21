@@ -102,6 +102,10 @@ export class LRU<T> {
         }
     }
 
+    has(key: any) {
+        return !!this.cacheMap[key];
+    }
+
     // To iterate over LRU with a 'for...of' loop
     *[Symbol.iterator]() {
         let node = this.head;
